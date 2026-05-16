@@ -43,6 +43,7 @@ function renderBudget(total) {
 async function loadExpenses() {
     const res = await fetch('/expenses');
     const expenses = await res.json();
+    allExpenses = expenses;
     renderList(expenses);
     renderChart(expenses);
     renderTotal(expenses);
@@ -57,7 +58,7 @@ function renderTotal(expenses) {
 function renderList(expenses) {
     const list = document.getElementById('expenseList');
     if (expenses.length === 0) {
-        list.innerHTML = '<p class="empty">No expenses yet. Add one above! 👆</p>';
+        list.innerHTML = '<p class="empty">No expenses yet. Add one above! </p>';
         return;
     }
     list.innerHTML = expenses.map((e, i) => `
@@ -136,3 +137,13 @@ async function deleteExpense(index) {
 }
 
 loadExpenses();
+let allExpenses = [];
+
+function searchExpenses() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const filtered = allExpenses.filter(e =>
+        e.title.toLowerCase().includes(query) ||
+        e.category.toLowerCase().includes(query)
+    );
+    renderList(filtered);
+}
