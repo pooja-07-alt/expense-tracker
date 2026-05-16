@@ -1,5 +1,44 @@
 
 let chart = null;
+let budget = localStorage.getItem('budget') ? parseFloat(localStorage.getItem('budget')) : null;
+
+function setBudget() {
+    const val = parseFloat(document.getElementById('budgetInput').value);
+    if (!val || val <= 0) { alert('Enter a valid budget!'); return; }
+    budget = val;
+    localStorage.setItem('budget', budget);
+    document.getElementById('budgetInput').value = '';
+    loadExpenses();
+}
+
+function renderBudget(total) {
+    const bar = document.getElementById('progressBar');
+    const status = document.getElementById('budgetStatus');
+
+    if (!budget) {
+        bar.style.width = '0%';
+        status.textContent = 'No budget set';
+        status.className = 'budget-status';
+        return;
+    }
+
+    const percent = Math.min((total / budget) * 100, 100);
+    bar.style.width = `${percent}%`;
+
+    if (percent < 60) {
+        bar.style.background = 'linear-gradient(135deg, #a78bfa, #60a5fa)';
+        status.textContent = `₹${total.toFixed(2)} of ₹${budget} spent (${percent.toFixed(1)}%) — You're doing great! 🟢`;
+        status.className = 'budget-status status-safe';
+    } else if (percent < 90) {
+        bar.style.background = 'linear-gradient(135deg, #fbbf24, #f87171)';
+        status.textContent = `₹${total.toFixed(2)} of ₹${budget} spent (${percent.toFixed(1)}%) — Slow down! 🟡`;
+        status.className = 'budget-status status-warning';
+    } else {
+        bar.style.background = 'linear-gradient(135deg, #f87171, #ef4444)';
+        status.textContent = `₹${total.toFixed(2)} of ₹${budget} spent (${percent.toFixed(1)}%) — Budget exceeded! 🔴`;
+        status.className = 'budget-status status-danger';
+    }
+}
 
 async function loadExpenses() {
     const res = await fetch('/expenses');
@@ -12,6 +51,7 @@ async function loadExpenses() {
 function renderTotal(expenses) {
     const total = expenses.reduce((sum, e) => sum + parseFloat(e.amount), 0);
     document.getElementById('total').textContent = `₹${total.toFixed(2)}`;
+    renderBudget(total);
 }
 
 function renderList(expenses) {

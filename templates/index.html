@@ -36,9 +36,25 @@
         </div>
 
         <!-- Summary -->
+        <!-- Summary -->
         <div class="card summary-card">
             <h2>Total Spent</h2>
             <p class="total" id="total">₹0</p>
+
+            <div class="budget-section">
+                <div class="budget-header">
+                    <span>Monthly Budget</span>
+                    <div class="budget-input-row">
+                        <span>₹</span>
+                        <input type="number" id="budgetInput" placeholder="Set budget" />
+                        <button onclick="setBudget()" class="budget-btn">Set</button>
+                    </div>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progressBar"></div>
+                </div>
+                <p class="budget-status" id="budgetStatus">No budget set</p>
+            </div>
         </div>
 
         <!-- Chart -->
