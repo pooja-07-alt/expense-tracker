@@ -1,79 +1,140 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expense Tracker</title>
+    <title>ExpenseQuest 🎮</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Expense Tracker</h1>
+<div class="scanlines"></div>
+<div class="stars" id="stars"></div>
 
-        <!-- Add Expense Form -->
-        <div class="card form-card">
-            <h2>Add Expense</h2>
-            <div class="form-group">
-                <input type="text" id="title" placeholder="Expense title (e.g. Lunch)" />
-            </div>
-            <div class="form-group">
-                <input type="number" id="amount" placeholder="Amount (₹)" />
-            </div>
-            <div class="form-group">
-                <select id="category">
-                    <option value="Food">🍔 Food</option>
-                    <option value="Transport">🚗 Transport</option>
-                    <option value="Shopping">🛍️ Shopping</option>
-                    <option value="Entertainment">🎮 Entertainment</option>
-                    <option value="Health">💊 Health</option>
-                    <option value="Other">📦 Other</option>
-                </select>
-            </div>
-            <button onclick="addExpense()">Add Expense</button>
+<div class="container">
+
+    <!-- HUD Header -->
+    <header class="hud-header">
+        <div class="hud-title">
+            <span class="title-icon">⚔️</span>
+            <h1>ExpenseQuest</h1>
+            <span class="title-badge">LIVE</span>
         </div>
+        <div class="hud-stats">
+            <div class="stat-chip">
+                <span class="stat-label">LEVEL</span>
+                <span class="stat-value" id="playerLevel">1</span>
+            </div>
+            <div class="stat-chip">
+                <span class="stat-label">STREAK</span>
+                <span class="stat-value" id="streakCount">0</span>
+            </div>
+            <div class="stat-chip">
+                <span class="stat-label">RANK</span>
+                <span class="stat-value" id="playerRank">ROOKIE</span>
+            </div>
+        </div>
+    </header>
 
-        <!-- Summary -->
-        <!-- Summary -->
-        <div class="card summary-card">
-            <h2>Total Spent</h2>
-            <p class="total" id="total">₹0</p>
+    <!-- Main Grid -->
+    <div class="main-grid">
 
-            <div class="budget-section">
-                <div class="budget-header">
-                    <span>Monthly Budget</span>
-                    <div class="budget-input-row">
-                        <span>₹</span>
-                        <input type="number" id="budgetInput" placeholder="Set budget" />
-                        <button onclick="setBudget()" class="budget-btn">Set</button>
+        <!-- Left Column -->
+        <div class="left-col">
+
+            <!-- Add Expense -->
+            <div class="card form-card">
+                <div class="card-label">⚡ NEW ENTRY</div>
+                <div class="form-group">
+                    <input type="text" id="title" placeholder="Mission name..." />
+                </div>
+                <div class="form-group">
+                    <input type="number" id="amount" placeholder="Gold spent (₹)" />
+                </div>
+                <div class="form-group">
+                    <select id="category">
+                        <option value="Food">🍔 Food</option>
+                        <option value="Transport">🚗 Transport</option>
+                        <option value="Shopping">🛍️ Shopping</option>
+                        <option value="Entertainment">🎮 Entertainment</option>
+                        <option value="Health">💊 Health</option>
+                        <option value="Other">📦 Other</option>
+                    </select>
+                </div>
+                <button onclick="addExpense()" class="add-btn">
+                    <span>+ LOG EXPENSE</span>
+                </button>
+            </div>
+
+            <!-- XP Budget -->
+            <div class="card budget-card">
+                <div class="card-label">🏆 BUDGET XP</div>
+                <div class="total-display">
+                    <span class="currency">₹</span>
+                    <span id="total">0</span>
+                </div>
+                <div class="xp-bar-wrapper">
+                    <div class="xp-labels">
+                        <span>0</span>
+                        <span id="budgetLabel">Set budget to track XP</span>
                     </div>
+                    <div class="xp-track">
+                        <div class="xp-fill" id="progressBar"></div>
+                        <div class="xp-glow" id="progressGlow"></div>
+                    </div>
+                    <p class="budget-status" id="budgetStatus"></p>
                 </div>
-                <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" id="progressBar"></div>
+                <div class="budget-set-row">
+                    <input type="number" id="budgetInput" placeholder="Set monthly budget..." />
+                    <button onclick="setBudget()" class="set-btn">SET</button>
                 </div>
-                <p class="budget-status" id="budgetStatus">No budget set</p>
             </div>
+
         </div>
 
-        <!-- Chart -->
-        <div class="card chart-card">
-            <h2>Spending by Category</h2>
-            <canvas id="expenseChart"></canvas>
-        </div>
+        <!-- Right Column -->
+        <div class="right-col">
 
-        <!-- Expense List -->
-        <!-- Expense List -->
-        <div class="card list-card">
-            <h2>All Expenses</h2>
-            <div class="form-group">
-                <input type="text" id="searchInput" placeholder=" Search expenses..." oninput="searchExpenses()" />
+            <!-- Stats Row -->
+            <div class="stats-row">
+                <div class="card mini-stat">
+                    <div class="mini-label">TODAY</div>
+                    <div class="mini-value" id="todayTotal">₹0</div>
+                </div>
+                <div class="card mini-stat">
+                    <div class="mini-label">ENTRIES</div>
+                    <div class="mini-value" id="entryCount">0</div>
+                </div>
+                <div class="card mini-stat">
+                    <div class="mini-label">TOP CAT</div>
+                    <div class="mini-value" id="topCategory">—</div>
+                </div>
             </div>
-            <ul id="expenseList"></ul>
+
+            <!-- Chart -->
+            <div class="card chart-card">
+                <div class="card-label">📊 INTEL MAP</div>
+                <canvas id="expenseChart"></canvas>
+            </div>
+
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <!-- Expense List -->
+    <div class="card list-card">
+        <div class="list-header">
+            <div class="card-label">📋 MISSION LOG</div>
+            <input type="text" id="searchInput" placeholder="🔍 Search missions..." oninput="searchExpenses()" class="search-input" />
+        </div>
+        <ul id="expenseList"></ul>
+    </div>
+
+</div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
