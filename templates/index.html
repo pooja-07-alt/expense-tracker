@@ -9,12 +9,9 @@
 </head>
 <body>
 
-<div class="scanlines"></div>
-<div class="stars" id="stars"></div>
-
 <div class="container">
 
-    <!-- HUD Header -->
+    <!-- Header -->
     <header class="hud-header">
         <div class="hud-title">
             <span class="title-icon">⚔️</span>
@@ -62,12 +59,10 @@
                         <option value="Other">📦 Other</option>
                     </select>
                 </div>
-                <button onclick="addExpense()" class="add-btn">
-                    <span>+ LOG EXPENSE</span>
-                </button>
+                <button onclick="addExpense()" class="add-btn">+ LOG EXPENSE</button>
             </div>
 
-            <!-- XP Budget -->
+            <!-- Budget -->
             <div class="card budget-card">
                 <div class="card-label">🏆 BUDGET XP</div>
                 <div class="total-display">
@@ -81,7 +76,6 @@
                     </div>
                     <div class="xp-track">
                         <div class="xp-fill" id="progressBar"></div>
-                        <div class="xp-glow" id="progressGlow"></div>
                     </div>
                     <p class="budget-status" id="budgetStatus"></p>
                 </div>
@@ -96,7 +90,7 @@
         <!-- Right Column -->
         <div class="right-col">
 
-            <!-- Stats Row -->
+            <!-- Mini Stats -->
             <div class="stats-row">
                 <div class="card mini-stat">
                     <div class="mini-label">TODAY</div>
@@ -121,7 +115,7 @@
         </div>
     </div>
 
-    <!-- Expense List -->
+    <!-- Mission Log -->
     <div class="card list-card">
         <div class="list-header">
             <div class="card-label">📋 MISSION LOG</div>
@@ -132,9 +126,7 @@
 
 </div>
 
-<!-- Toast notification -->
 <div class="toast" id="toast"></div>
-
 <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
