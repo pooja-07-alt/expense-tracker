@@ -2,12 +2,21 @@ let chart = null;
 let allExpenses = [];
 let budget = localStorage.getItem('budget') ? parseFloat(localStorage.getItem('budget')) : null;
 
+// ── Animations ──────────────────────────────────────────
+
+
+
+
+// ── Toast ────────────────────────────────────────────────
+
 function showToast(msg) {
     const toast = document.getElementById('toast');
     toast.textContent = msg;
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 2500);
 }
+
+// ── Game Stats ───────────────────────────────────────────
 
 function updateGameStats(expenses) {
     const count = expenses.length;
@@ -32,6 +41,8 @@ function updateGameStats(expenses) {
     document.getElementById('topCategory').textContent = topCat ? topCat[0] : '—';
 }
 
+// ── Load ─────────────────────────────────────────────────
+
 async function loadExpenses() {
     const res = await fetch('/expenses');
     const expenses = await res.json();
@@ -40,7 +51,10 @@ async function loadExpenses() {
     renderChart(expenses);
     renderTotal(expenses);
     updateGameStats(expenses);
+   
 }
+
+// ── Render ───────────────────────────────────────────────
 
 function renderTotal(expenses) {
     const total = expenses.reduce((s, e) => s + parseFloat(e.amount), 0);
@@ -162,6 +176,7 @@ async function addExpense() {
     document.getElementById('title').value = '';
     document.getElementById('amount').value = '';
     showToast('✓ MISSION LOGGED');
+    coinBurst();
     loadExpenses();
 }
 
@@ -179,5 +194,6 @@ function searchExpenses() {
     );
     renderList(filtered);
 }
+
 
 loadExpenses();

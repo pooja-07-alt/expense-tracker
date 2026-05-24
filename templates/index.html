@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ExpenseQuest 🎮</title>
+    <title>ExpenseQuest </title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -14,7 +14,7 @@
     <!-- Header -->
     <header class="hud-header">
         <div class="hud-title">
-            <span class="title-icon">⚔️</span>
+            <img src="{{ url_for('static', filename='logo.png') }}" class="title-logo" alt="logo" />
             <h1>ExpenseQuest</h1>
             <span class="title-badge">LIVE</span>
         </div>
@@ -42,7 +42,7 @@
 
             <!-- Add Expense -->
             <div class="card form-card">
-                <div class="card-label">⚡ NEW ENTRY</div>
+                <div class="card-label"> NEW ENTRY</div>
                 <div class="form-group">
                     <input type="text" id="title" placeholder="Mission name..." />
                 </div>
@@ -64,7 +64,7 @@
 
             <!-- Budget -->
             <div class="card budget-card">
-                <div class="card-label">🏆 BUDGET XP</div>
+                <div class="card-label"> BUDGET XP</div>
                 <div class="total-display">
                     <span class="currency">₹</span>
                     <span id="total">0</span>
@@ -118,7 +118,7 @@
     <!-- Mission Log -->
     <div class="card list-card">
         <div class="list-header">
-            <div class="card-label">📋 MISSION LOG</div>
+            <div class="card-label"> MISSION LOG</div>
             <input type="text" id="searchInput" placeholder="🔍 Search missions..." oninput="searchExpenses()" class="search-input" />
         </div>
         <ul id="expenseList"></ul>
